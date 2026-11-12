@@ -1,4 +1,4 @@
-:root{--bg:#faf9f6;--card:#fff;--ink:#14171c;--sub:#3f4856;--mut:#667080;--line:#e5e2da;--ac:#08726f;--ac-b:#0fa5a1;--ac2:#e3f3f1;--am:#e58a14;
+:root{--bg:#faf9f6;--card:#fff;--ink:#14171c;--sub:#3f4856;--mut:#667080;--line:#e5e2da;--ac:#08726f;--ac-b:#0fa5a1;--ac2:#e3f3f1;--am:#e58a14;--acrgb:15,165,161;
 --head:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;--body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;color-scheme:light}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:72px}
@@ -62,7 +62,7 @@ section{padding:72px 0;border-top:1px solid var(--line)}
 [data-r]{opacity:0;transform:translateY(16px);transition:opacity .6s var(--d,0ms),transform .6s var(--d,0ms)}
 [data-r].in{opacity:1;transform:none}
 .card{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:16px;transition:transform .25s,box-shadow .25s,border-color .25s}
-.card::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(15,165,161,.13),transparent 70%);opacity:0;transition:opacity .25s}
+.card::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(var(--acrgb),.13),transparent 70%);opacity:0;transition:opacity .25s}
 .card:hover{transform:translateY(-4px);border-color:#a9d6d2;box-shadow:0 18px 34px -20px rgba(8,114,111,.45)}
 .card:hover::after{opacity:1}
 .card:active{transform:translateY(-1px) scale(.99)}
@@ -150,3 +150,39 @@ footer{padding:28px 0 40px;border-top:1px solid var(--line);color:var(--mut);fon
   *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
   [data-r]{opacity:1;transform:none}
 }
+
+/* Projects: horror mode (switched on by script.js while the section is in view) */
+#projects{position:relative;overflow:hidden;background:var(--bg);color:var(--ink);transition:background-color .9s ease,border-color .9s ease}
+#projects>.wrap{position:relative;z-index:1}
+#projects::before,#projects::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .9s;z-index:0}
+#projects::before{background:radial-gradient(ellipse at 50% 0%,rgba(200,20,40,.26),transparent 60%),radial-gradient(ellipse at 50% 50%,transparent 40%,rgba(0,0,0,.72) 100%)}
+#projects::after{background:radial-gradient(ellipse at 50% 100%,rgba(220,20,40,.32),transparent 55%)}
+#projects.dark::before{opacity:1}
+#projects.dark::after{opacity:1;animation:beat 3.4s ease-in-out infinite}
+@keyframes beat{0%,100%{opacity:.3}12%{opacity:1}24%{opacity:.45}36%{opacity:.95}60%{opacity:.3}}
+#projects.dark{--bg:#0b0609;--card:#150b10;--ink:#f4ecec;--sub:#d2c0c1;--mut:#a28b8d;--line:#3b1b22;--ac:#ff5566;--ac-b:#ff2e43;--ac2:#2b0e14;--am:#ff9a3c;--acrgb:255,46,67}
+#projects.sw *{transition:background-color .9s,color .9s,border-color .9s,box-shadow .9s,fill .9s,stroke .9s!important}
+#projects.dark .btn.primary{background:#c4122a;border-color:#e0283f;color:#fff}
+#projects.dark .btn.primary:hover{background:#d8152f}
+#projects.dark .btn:hover{box-shadow:0 8px 22px -10px rgba(255,46,67,.6)}
+#projects.dark .card:hover{border-color:#7d2433;box-shadow:0 18px 34px -20px rgba(255,46,67,.5)}
+#projects.dark .tags li:hover{color:#1a0a0e}
+#projects.dark .frame{border-color:#4a1f28;box-shadow:0 24px 50px -26px rgba(255,46,67,.45)}
+#projects.dark .frame:hover{box-shadow:0 30px 56px -24px rgba(255,46,67,.7)}
+#projects.dark .bar{background:#1d0f14}
+#projects.dark .stage{background:#10080b}
+#projects.dark h2{text-shadow:0 0 18px rgba(255,46,67,.55);animation:flick 7s infinite}
+@keyframes flick{0%,90%,100%{opacity:1}92%{opacity:.4}94%{opacity:1}96%{opacity:.55}}
+.warn{display:flex;align-items:center;gap:9px;min-height:22px;margin-bottom:12px;font:600 .86rem var(--body);color:#ff7a88;opacity:0;transform:translateY(6px);transition:opacity .7s,transform .7s}
+.warn i{width:8px;height:8px;border-radius:50%;background:#ff2e43;box-shadow:0 0 8px #ff2e43;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:.15}}
+#projects.dark .warn{opacity:1;transform:none}
+.mozzies{position:absolute;inset:0;z-index:5;pointer-events:none;opacity:0;transition:opacity .8s}
+#projects.dark .mozzies{opacity:1}
+.mz{position:absolute;left:0;top:0;width:40px;height:27px;color:#e9dcdc;filter:drop-shadow(0 0 5px rgba(255,46,67,.65));will-change:transform}
+.mz svg{display:block;width:100%;height:100%;overflow:visible}
+.mz .b{fill:currentColor}
+.mz .lg{fill:none;stroke:currentColor;stroke-width:.9;stroke-linecap:round}
+.mz .wg{fill:rgba(255,255,255,.3);stroke:currentColor;stroke-width:.6;transform-box:fill-box;transform-origin:50% 50%;animation:wing .07s linear infinite alternate}
+.mz .wg.w2{animation-delay:-.035s}
+@keyframes wing{from{transform:scaleY(1)}to{transform:scaleY(.2)}}
