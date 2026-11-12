@@ -1,0 +1,48 @@
+/* Projects "danger zone": blends in and out as you scroll. --k (0 to 1) is set by mosquito.js */
+main>section{position:relative;z-index:2}
+#projects{z-index:1;padding:0;border-top:0}
+.zone{--k:0;position:relative;z-index:1;padding:112px 0 124px;color:var(--ink)}
+.zone>.wrap{position:relative;z-index:1}
+@supports (color:color-mix(in srgb,red,blue)){
+.zone{
+  --ink:color-mix(in srgb,#f7eeee calc(var(--k)*100%),#14171c);
+  --sub:color-mix(in srgb,#dcc9ca calc(var(--k)*100%),#3f4856);
+  --mut:color-mix(in srgb,#b9a0a3 calc(var(--k)*100%),#667080);
+  --line:color-mix(in srgb,#4f2331 calc(var(--k)*100%),#e5e2da);
+  --card:color-mix(in srgb,#1f0c14 calc(var(--k)*100%),#ffffff);
+  --ac:color-mix(in srgb,#d62b43 calc(var(--k)*100%),#08726f);
+  --ac-b:color-mix(in srgb,#ff4d63 calc(var(--k)*100%),#0fa5a1);
+  --ac2:color-mix(in srgb,#3b1019 calc(var(--k)*100%),#e3f3f1);
+  --am:color-mix(in srgb,#ff9a3c calc(var(--k)*100%),#e58a14);
+  --glow:color-mix(in srgb,#ff2e43 calc(var(--k)*100%),#0fa5a1)}
+.zone .btn:hover{box-shadow:0 8px 22px -10px color-mix(in srgb,var(--glow) 60%,transparent)}
+.zone .btn.primary:hover{background:color-mix(in srgb,#ee3a52 calc(var(--k)*100%),#0a8a86)}
+.zone .frame{box-shadow:0 24px 46px -28px color-mix(in srgb,var(--glow) 50%,rgba(20,23,28,.6))}
+.zone .frame:hover{box-shadow:0 30px 54px -26px color-mix(in srgb,var(--glow) 70%,transparent)}
+.zone .bar{background:color-mix(in srgb,#2b1019 calc(var(--k)*100%),#f1efe9)}
+.zone .stage{background:color-mix(in srgb,#150a0f calc(var(--k)*100%),#f6f5f1)}
+}
+/* soft-edged crimson haze: fades in and out vertically instead of a hard cut */
+.aura{position:absolute;inset:-210px 0 -170px;z-index:0;pointer-events:none;opacity:var(--k);
+  -webkit-mask-image:linear-gradient(transparent,#000 270px,#000 calc(100% - 230px),transparent);
+  mask-image:linear-gradient(transparent,#000 270px,#000 calc(100% - 230px),transparent);
+  background:radial-gradient(60% 42% at 22% 30%,rgba(214,43,67,.55),transparent 72%),radial-gradient(52% 40% at 82% 72%,rgba(150,34,120,.5),transparent 72%),linear-gradient(180deg,#2d0b17,#1e0812 50%,#2b0b18)}
+.pulse{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(255,40,70,.35),transparent 55%);animation:beat 3.4s ease-in-out infinite}
+@keyframes beat{0%,100%{opacity:.3}12%{opacity:1}24%{opacity:.45}36%{opacity:.95}60%{opacity:.3}}
+.bokeh{position:absolute;inset:0;overflow:hidden}
+.bokeh i{position:absolute;border-radius:50%;animation:drift ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(46px,-64px) scale(1.25)}}
+.mzc{position:absolute;inset:0;z-index:3;pointer-events:none}
+.zone.deep h2{text-shadow:0 0 18px rgba(255,46,67,.55);animation:flick 7s infinite}
+@keyframes flick{0%,90%,100%{opacity:1}92%{opacity:.4}94%{opacity:1}96%{opacity:.55}}
+.warn{display:flex;align-items:center;gap:9px;min-height:22px;margin-bottom:12px;font:600 .86rem var(--body);color:#ff8a97;opacity:var(--k)}
+.warn i{width:8px;height:8px;border-radius:50%;background:#ff2e43;box-shadow:0 0 8px #ff2e43;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:.15}}
+.mzbtn{position:absolute;z-index:4;top:50px;right:max(24px,calc(50% - 496px));display:inline-flex;gap:6px;padding:8px 14px;border-radius:999px;font:500 .84rem var(--body);color:#fff;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);cursor:pointer;opacity:var(--k);pointer-events:none;transition:background .2s,transform .2s}
+.zone.deep .mzbtn{pointer-events:auto}
+.mzbtn:hover{background:rgba(255,255,255,.2);transform:translateY(-2px)}
+.mzbtn b{font-weight:600}
+/* More projects stays in the normal light theme */
+.more{position:relative;z-index:2;padding-top:48px;padding-bottom:84px}
+.more .sub{margin-top:0}
+@media (max-width:900px){.zone{padding:96px 0 104px}.mzbtn{top:46px}}
