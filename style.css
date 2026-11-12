@@ -16,7 +16,7 @@ section{padding:72px 0;border-top:1px solid var(--line)}
 .progress{position:fixed;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--ac-b),var(--am));transform:scaleX(0);transform-origin:0 50%;z-index:40}
 
 /* nav */
-.nav{position:sticky;top:0;z-index:30;background:rgba(250,249,246,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{position:sticky;top:0;z-index:30;background:rgba(250,249,246,.96);border-bottom:1px solid var(--line)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
 .brand{display:flex;align-items:center;gap:8px;font:700 1.05rem var(--head);text-decoration:none}
 .brand .ic{color:var(--ac);transition:transform .3s}
