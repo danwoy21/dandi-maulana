@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="horror.css">
 <noscript><style>[data-r]{opacity:1!important;transform:none!important}</style></noscript>
 </head>
 <body>
@@ -91,7 +92,10 @@
 </section>
 
 <section id="projects">
-  <div class="mozzies" id="mozzies" aria-hidden="true"></div>
+  <div class="zone" id="zone">
+  <div class="aura" aria-hidden="true"><div class="pulse"></div><div class="bokeh" id="bokeh"></div></div>
+  <canvas class="mzc" id="mzc" aria-hidden="true"></canvas>
+  <button class="mzbtn" id="mzmode" type="button" aria-pressed="false">Mosquitoes: <b>follow me</b></button>
   <div class="wrap">
     <h2 data-r>Projects</h2>
     <div class="feature">
@@ -126,6 +130,9 @@
       </div>
     </div>
 
+  </div>
+  </div>
+  <div class="wrap more">
     <h3 class="sub" data-r>More projects</h3>
     <ul class="pgrid">
       <li class="card proj" data-r><span class="chip"><svg class="ic"><use href="#i-chart"/></svg></span><div><b>Predictive Analysis of Individual Health Insurance Claim Trends</b><span>Predictive analysis</span></div></li>
@@ -174,5 +181,6 @@
 <footer><div class="wrap">© 2026 Dandi Maulana</div></footer>
 <div class="toast" id="toast" role="status"></div>
 <script src="script.js" defer></script>
+<script src="mosquito.js" defer></script>
 </body>
 </html>
