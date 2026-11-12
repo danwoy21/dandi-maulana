@@ -82,48 +82,4 @@
     })},{rootMargin:'-40% 0px -55% 0px'});
     ['experience','projects','about','contact'].forEach(function(id){nio.observe(document.getElementById(id))});
   }
-  /* Projects: horror mode + wandering mosquitoes (only while this section is in view) */
-  var pj=$('#projects'), mz=$('#mozzies');
-  if(pj&&mz){
-    var MOZ='<svg viewBox="0 0 48 32" aria-hidden="true"><path class="lg" d="M20 16L12 5M22 16L9 17M20 16l-7 11M25 16L20 3M25 16l-3 14"/><g transform="rotate(-28 22 10)"><ellipse class="wg" cx="22" cy="10" rx="10" ry="3.4"/></g><g transform="rotate(28 22 22)"><ellipse class="wg w2" cx="22" cy="22" rx="10" ry="3.4"/></g><ellipse class="b" cx="11" cy="16" rx="9" ry="2.6"/><ellipse class="b" cx="22" cy="16" rx="5" ry="3.4"/><circle class="b" cx="29" cy="16" r="2.7"/><path class="lg" d="M31 16h10" stroke-width="1.3"/></svg>';
-    var ms=[], raf=0, last=0, ptr=null, swt;
-    function turn(a,to){return Math.atan2(Math.sin(to-a),Math.cos(to-a))}
-    function spawn(){
-      var W=pj.offsetWidth, H=pj.offsetHeight, n=innerWidth<700?6:10;
-      for(var i=0;i<n;i++){
-        var el=document.createElement('div'); el.className='mz'; el.innerHTML=MOZ; mz.appendChild(el);
-        ms.push({el:el,x:Math.random()*W,y:Math.random()*H,a:Math.random()*6.28,s:55+Math.random()*50,p:Math.random()*100,k:.6+Math.random()*.8});
-      }
-    }
-    function tick(t){
-      var dt=Math.min((t-last)/1000||0,.05), ts=t/1000, W=pj.offsetWidth, H=pj.offsetHeight;
-      last=t;
-      ms.forEach(function(m){
-        m.a+=(Math.sin(ts*1.7*m.k+m.p)*1.6+Math.cos(ts*.9+m.p*2)*1.1)*dt*2.2;           /* lazy wandering */
-        if(ptr){                                                                         /* drawn to the cursor, then circle it */
-          var dx=ptr.x-m.x, dy=ptr.y-m.y, d=Math.sqrt(dx*dx+dy*dy);
-          if(d<420)m.a+=turn(m.a,Math.atan2(dy,dx)+(d<110?1.4:0))*dt*2.2;
-        }
-        if(m.x<-40||m.x>W+40||m.y<-40||m.y>H+40)m.a+=turn(m.a,Math.atan2(H/2-m.y,W/2-m.x))*dt*4;   /* stay inside the section */
-        m.x+=Math.cos(m.a)*m.s*dt; m.y+=Math.sin(m.a)*m.s*dt;
-        var jx=Math.sin(ts*47+m.p)*1.3, jy=Math.cos(ts*53+m.p)*1.3;                      /* buzzing jitter */
-        m.el.style.transform='translate('+(m.x+jx-20)+'px,'+(m.y+jy-13)+'px) rotate('+m.a+'rad)';
-      });
-      raf=requestAnimationFrame(tick);
-    }
-    function fly(on){
-      if(on){
-        if(RM)return;
-        if(!ms.length)spawn();
-        if(!raf){last=performance.now();raf=requestAnimationFrame(tick)}
-      }else setTimeout(function(){if(!pj.classList.contains('dark')&&raf){cancelAnimationFrame(raf);raf=0}},900);
-    }
-    pj.addEventListener('pointermove',function(e){var r=pj.getBoundingClientRect();ptr={x:e.clientX-r.left,y:e.clientY-r.top}});
-    pj.addEventListener('pointerleave',function(){ptr=null});
-    new IntersectionObserver(function(es){es.forEach(function(e){
-      var on=e.isIntersecting;
-      pj.classList.add('sw'); clearTimeout(swt); swt=setTimeout(function(){pj.classList.remove('sw')},1000);
-      pj.classList.toggle('dark',on); fly(on);
-    })},{rootMargin:'-30% 0px -30% 0px'}).observe(pj);
-  }
 })();
