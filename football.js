@@ -49,40 +49,52 @@
   }
   function drop(){ball.x=W*(.18+rnd()*.35);ball.y=-R*2;ball.vx=150+rnd()*250;ball.vy=0;inG=false;respawn=0}
 
-  /* goal on the right: net mesh that billows when the ball lands in it */
-  function drawNet(gx,gt,gl,dt){
-    var C=9,N=7,A=0,i,j,p;
-    if(rip){rip.t+=dt;if(rip.t>1.6)rip=null;else A=rip.amp*Math.exp(-rip.t*3)}
-    function pt2(i,j){
-      var x=gx+(W-gx)*i/C,y=gt+(gl-gt)*j/N;
-      if(A>.3){var dx=x-rip.x,dy=y-rip.y,dd=Math.sqrt(dx*dx+dy*dy),f=Math.sin(Math.PI*i/C)*Math.sin(Math.PI*j/N),w=A*f*Math.sin(dd*.045-rip.t*16)*Math.exp(-dd*.004);x+=w*.8;y+=w*.5}
-      return [x,y];
-    }
-    ctx.strokeStyle='rgba(255,255,255,.36)';ctx.lineWidth=1;ctx.beginPath();
-    for(j=0;j<=N;j++)for(i=0;i<=C;i++){p=pt2(i,j);if(i)ctx.lineTo(p[0],p[1]);else ctx.moveTo(p[0],p[1])}
-    for(i=0;i<=C;i++)for(j=0;j<=N;j++){p=pt2(i,j);if(j)ctx.lineTo(p[0],p[1]);else ctx.moveTo(p[0],p[1])}
+  /* goal seen from an oblique angle (3/4 view like a console football game): near post, far post, crossbar, roof, side and back nets */
+  var qx=0,qy=0,gA=0;
+  function geo(gl,gh){
+    var Wd=clamp(gh*1.15,120,170),zx=Wd*.46,zy=-Wd*.34,Dp=clamp(W*.07,56,90),dy=-Dp*.12,mx=W-zx/2-Dp-8;
+    function mv(p,x,y){return [p[0]+x,p[1]+y]}
+    var P0=[mx-zx/2,gl-zy/2],P1=[mx+zx/2,gl+zy/2],T0=mv(P0,0,-gh),T1=mv(P1,0,-gh);
+    return {mx:mx,bx:mx+Dp,P0:P0,P1:P1,T0:T0,T1:T1,U0:mv(T0,Dp,dy),U1:mv(T1,Dp,dy),B0:mv(P0,Dp,dy),B1:mv(P1,Dp,dy)};
+  }
+  function V(a,b,c,d,u,v){                                                  /* point on a net panel, pushed by the ripple */
+    qx=(1-u)*(1-v)*a[0]+u*(1-v)*b[0]+u*v*c[0]+(1-u)*v*d[0];qy=(1-u)*(1-v)*a[1]+u*(1-v)*b[1]+u*v*c[1]+(1-u)*v*d[1];
+    if(gA>.3){var dx=qx-rip.x,dy=qy-rip.y,dd=Math.sqrt(dx*dx+dy*dy),w=gA*Math.sin(Math.PI*u)*Math.sin(Math.PI*v)*Math.sin(dd*.045-rip.t*16)*Math.exp(-dd*.004);qx+=w*.8;qy+=w*.5}
+  }
+  function mesh(a,b,c,d,C,N,al){
+    var i,j;ctx.strokeStyle='rgba(255,255,255,'+al+')';ctx.lineWidth=1;ctx.beginPath();
+    for(j=0;j<=N;j++)for(i=0;i<=C;i++){V(a,b,c,d,i/C,j/N);if(i)ctx.lineTo(qx,qy);else ctx.moveTo(qx,qy)}
+    for(i=0;i<=C;i++)for(j=0;j<=N;j++){V(a,b,c,d,i/C,j/N);if(j)ctx.lineTo(qx,qy);else ctx.moveTo(qx,qy)}
     ctx.stroke();
   }
-  function drawFrame(gx,gt,gl){
-    ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=hit>0?9:7;ctx.strokeStyle=hit>0?'#c4f04a':'#f3f6f8';
-    ctx.beginPath();ctx.moveTo(W+4,gt);ctx.lineTo(gx,gt);ctx.lineTo(gx,gl);ctx.stroke();
+  function bar(p,q,w,col){ctx.lineWidth=w;ctx.strokeStyle=col;ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(q[0],q[1]);ctx.stroke()}
+  function goalBack(G,dt){
+    gA=0;if(rip){rip.t+=dt;if(rip.t>1.6)rip=null;else gA=rip.amp*Math.exp(-rip.t*3)}
+    ctx.fillStyle='rgba(0,0,0,.22)';ctx.beginPath();ctx.moveTo(G.P0[0],G.P0[1]);ctx.lineTo(G.P1[0],G.P1[1]);ctx.lineTo(G.B1[0],G.B1[1]);ctx.lineTo(G.B0[0],G.B0[1]);ctx.fill();
+    mesh(G.P1,G.B1,G.U1,G.T1,5,5,.26);mesh(G.B0,G.B1,G.U1,G.U0,6,5,.3);mesh(G.T0,G.T1,G.U1,G.U0,5,4,.28);
+    ctx.lineCap='round';ctx.lineJoin='round';
+    var t='rgba(243,246,248,.5)';
+    bar(G.U0,G.B0,3,t);bar(G.U1,G.B1,3,t);bar(G.U0,G.U1,3,t);bar(G.T0,G.U0,3,t);bar(G.T1,G.U1,3,t);bar(G.P1,G.T1,6,hit>0?'#c4f04a':'rgba(243,246,248,.8)');   /* far post */
+  }
+  function goalFront(G){
+    mesh(G.P0,G.B0,G.U0,G.T0,5,5,.26);                                       /* near side net, seen over the ball */
+    var c=hit>0?'#c4f04a':'#f3f6f8';
+    bar(G.P0,G.T0,8,c);bar(G.T0,G.T1,8,c);                                    /* near post and crossbar */
   }
 
   function tick(t){
-    var dt=Math.min((t-last)/1000||.016,.04),fy=H-R-Math.max(28,H*.07),gl=fy+R,gw=clamp(W*.16,84,150),gh=clamp(H*.2,112,160),gx=W-gw,gt=gl-gh,i;last=t;
+    var dt=Math.min((t-last)/1000||.016,.04),fy=H-R-Math.max(28,H*.07),gl=fy+R,gh=clamp(H*.2,112,160),G=geo(gl,gh),gx=G.mx,gt=gl-gh,i;last=t;
     if(dt>.034){if(++slow>45)lite()}else if(slow>0)slow--;
     ctx.clearRect(0,0,W,H);
     if(show){
       ball.vy+=1900*dt;ball.x+=ball.vx*dt;ball.y+=ball.vy*dt;
+      var inN=ball.y>gt+2&&ball.x>gx,wr=inN?G.bx:W;                            /* inside the goal the back net is the wall */
       if(ball.x<R){ball.x=R;ball.vx=Math.abs(ball.vx)*.8}
-      else if(ball.x>W-R){                                                     /* back wall: soft in the net, bouncy elsewhere */
-        var inN=ball.y>gt+2,v0=ball.vx;ball.x=W-R;ball.vx=-Math.abs(ball.vx)*(inN?.15:.8);
-        if(inN&&v0>260)rip={t:0,x:W,y:ball.y,amp:clamp(v0/70,5,14)};
-      }
+      else if(ball.x>wr-R){var v0=ball.vx;ball.x=wr-R;ball.vx=-Math.abs(ball.vx)*(inN?.15:.8);if(inN&&v0>260)rip={t:0,x:G.bx,y:ball.y,amp:clamp(v0/70,5,14)}}
       if(ball.y<R){ball.y=R;ball.vy=Math.abs(ball.vy)*.6}
       if(ball.y>fy){ball.y=fy;ball.vy=Math.abs(ball.vy)>90?-ball.vy*.66:0;ball.vx*=1-Math.min(1,dt*1.6)}
       ball.vx*=1-dt*.08;
-      var cx=clamp(ball.x,gx-3,W),cy=clamp(ball.y,gt-4,gt+4),ex=ball.x-cx,ey=ball.y-cy,ed=Math.sqrt(ex*ex+ey*ey);
+      var cx=clamp(ball.x,gx-3,G.bx),cy=clamp(ball.y,gt-4,gt+4),ex=ball.x-cx,ey=ball.y-cy,ed=Math.sqrt(ex*ex+ey*ey);
       if(ed<R){                                                               /* crossbar and post top: the ball bounces off */
         var nx=ed?ex/ed:0,ny=ed?ey/ed:-1,vn=ball.vx*nx+ball.vy*ny;
         if(vn<0){ball.vx-=1.75*vn*nx;ball.vy-=1.75*vn*ny;if(-vn>160)hit=.35}
@@ -92,7 +104,7 @@
       if(inside&&!inG){                                                       /* GOAL */
         inG=true;goals++;respawn=2.4;
         rip={t:0,x:ball.x,y:ball.y,amp:clamp(Math.sqrt(ball.vx*ball.vx+ball.vy*ball.vy)/50,8,24)};
-        pop={t:0};confetti(gx+gw*.4,gt+gh*.35);
+        pop={t:0};confetti(gx+20,gt+gh*.35);
       }else if(!inside&&ball.x<gx-R)inG=false;
       if(respawn>0){respawn-=dt;if(respawn<=0)drop()}
       hit=Math.max(0,hit-dt);
@@ -102,15 +114,14 @@
         ball.vx=clamp(pvx*.8+kx*(200+sp*.2),-1700,1700);ball.vy=clamp(pvy*.8+ky*(200+sp*.2)-140,-1700,1700);
         ball.x=px+kx*(R+12);ball.y=py+ky*(R+12)}
       ball.a+=ball.vx*dt/R;
-      ctx.fillStyle='rgba(0,0,0,.25)';ctx.beginPath();ctx.ellipse((gx+W)/2,gl+2,(W-gx)/2,6,0,0,TAU);ctx.fill();
-      drawNet(gx,gt,gl,dt);
+      goalBack(G,dt);
       var h=clamp((fy-ball.y)/(H*.6),0,1),k=1.05-h*.4;                      /* soft shadow on the grass */
       ctx.fillStyle='rgba(0,0,0,'+(.34*(1-h*.8)).toFixed(3)+')';ctx.beginPath();ctx.ellipse(ball.x,gl-3,R*k,R*.2*k,0,0,TAU);ctx.fill();
       var c=Math.cos(ball.a)*.5,s=Math.sin(ball.a)*.5;
       ctx.setTransform(c,s,-s,c,ball.x,ball.y);ctx.drawImage(pat,-60,-60);
       ctx.setTransform(.5,0,0,.5,ball.x,ball.y);ctx.drawImage(shade,-60,-60);
       ctx.setTransform(1,0,0,1,0,0);
-      drawFrame(gx,gt,gl);
+      goalFront(G);
     }
     for(i=bits.length-1;i>=0;i--){                                          /* confetti in the three host-nation colours */
       var b=bits[i];b.t+=dt;
