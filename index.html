@@ -8,9 +8,10 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E📈%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=Barlow+Condensed:ital,wght@1,700;1,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="horror.css">
+<link rel="stylesheet" href="football.css">
 <noscript><style>[data-r]{opacity:1!important;transform:none!important}</style></noscript>
 </head>
 <body>
@@ -132,13 +133,50 @@
 
   </div>
   </div>
+  <div class="fz" id="zone2">
+  <div class="aura2" aria-hidden="true"><div class="beam b1"></div><div class="beam b2"></div><div class="pitch"></div><div class="wm">2026</div><div class="flash" id="flash"></div></div>
+  <canvas class="fbc" id="fbc" aria-hidden="true"></canvas>
+  <button class="fzbtn" id="fzmode" type="button" aria-pressed="true">Football: <b>on</b></button>
+  <div class="wrap">
+    <div class="feature feature2">
+      <div data-r>
+        <h3 class="wch">World Cup 2026 Predictor</h3>
+        <p class="mut" style="margin-top:8px">Machine learning and Monte Carlo simulation</p>
+        <p class="body2">A dashboard that predicts the 2026 World Cup. A model trained on past international matches estimates win, draw and loss probabilities for any pair of the 48 teams, and a Monte Carlo simulation plays the whole tournament thousands of times to estimate each team’s chance of lifting the trophy.</p>
+        <ul class="facts">
+          <li>XGBoost trained on 2,269 matches from 2007 to 2026, using win rate, average goals, FIFA ranking, squad market value, form streak and head-to-head record</li>
+          <li>Monte Carlo simulation of the full tournament, from the group stage to the final</li>
+          <li>Four pages: title odds, team analytics, a match predictor and a tournament simulator</li>
+        </ul>
+        <ul class="tags"><li>Python</li><li>Streamlit</li><li>XGBoost</li><li>Monte Carlo</li><li>pandas</li><li>Matplotlib</li></ul>
+        <div class="links">
+          <a class="btn primary" href="https://wc2026-predictor-cjxuseohmyprqhhlunh6r8.streamlit.app/" target="_blank" rel="noopener">Open the app<svg class="ic"><use href="#i-ext"/></svg></a>
+          <a class="btn" href="https://github.com/danwoy21/wc2026-predictor" target="_blank" rel="noopener"><svg class="ic"><use href="#i-code"/></svg>View code on GitHub</a>
+        </div>
+      </div>
+      <div data-r>
+        <div class="frame">
+          <div class="bar"><i></i><i></i><i></i><span>wc2026-predictor.streamlit.app</span><em class="live"><b></b>DEMO</em></div>
+          <div class="stage" id="stage2">
+            <div class="gate" id="gate2">
+              <span class="chip big"><svg class="ic"><use href="#i-dash"/></svg></span>
+              <p>Run the live app right here. It is on a free plan, so it can take up to a minute to wake up.</p>
+              <button class="btn primary" id="load2" type="button">Load live demo</button>
+            </div>
+          </div>
+        </div>
+        <p class="note">Tip: move the cursor to kick the ball, and click to make it jump. If the demo stays blank, use “Open the app”.</p>
+      </div>
+    </div>
+  </div>
+  </div>
   <div class="wrap more">
     <h3 class="sub" data-r>More projects</h3>
     <ul class="pgrid">
-      <li class="card proj" data-r><span class="chip"><svg class="ic"><use href="#i-chart"/></svg></span><div><b>Predictive Analysis of Individual Health Insurance Claim Trends</b><span>Predictive analysis</span></div></li>
-      <li class="card proj" data-r><span class="chip"><svg class="ic"><use href="#i-chart"/></svg></span><div><b>Delivery Time Estimation</b><span>Regression</span></div></li>
-      <li class="card proj" data-r><span class="chip"><svg class="ic"><use href="#i-cluster"/></svg></span><div><b>Medicine Clustering Based on Textual Description and Price</b><span>K-Means</span></div></li>
-      <li class="card proj" data-r><span class="chip"><svg class="ic"><use href="#i-net"/></svg></span><div><b>Predicting Bootcamp Completion</b><span>Logistic Regression</span></div></li>
+      <li><div class="card proj" data-r><span class="chip"><svg class="ic"><use href="#i-chart"/></svg></span><div><b>Predictive Analysis of Individual Health Insurance Claim Trends</b><span>Predictive analysis</span></div></div></li>
+      <li><a class="card proj" data-r href="https://github.com/danwoy21/-Porter-Delivery-Time-Estimation-by-Regression" target="_blank" rel="noopener" title="View source code on GitHub"><span class="chip"><svg class="ic"><use href="#i-chart"/></svg></span><div><b>Delivery Time Estimation</b><span>Regression</span></div><svg class="ic go"><use href="#i-ext"/></svg></a></li>
+      <li><a class="card proj" data-r href="https://github.com/danwoy21/medicine-kmeans-clustering" target="_blank" rel="noopener" title="View source code on GitHub"><span class="chip"><svg class="ic"><use href="#i-cluster"/></svg></span><div><b>Medicine Clustering Based on Textual Description and Price</b><span>K-Means</span></div><svg class="ic go"><use href="#i-ext"/></svg></a></li>
+      <li><a class="card proj" data-r href="https://github.com/danwoy21/data-mining-competition-" target="_blank" rel="noopener" title="View source code on GitHub"><span class="chip"><svg class="ic"><use href="#i-net"/></svg></span><div><b>Predicting Bootcamp Completion</b><span>Logistic Regression</span></div><svg class="ic go"><use href="#i-ext"/></svg></a></li>
     </ul>
   </div>
 </section>
@@ -182,5 +220,6 @@
 <div class="toast" id="toast" role="status"></div>
 <script src="script.js" defer></script>
 <script src="mosquito.js" defer></script>
+<script src="football.js" defer></script>
 </body>
 </html>
