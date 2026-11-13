@@ -1,0 +1,41 @@
+/* Projects: World Cup night-match zone. football.js toggles .on while the section is on screen */
+.fz{position:relative;z-index:1;padding:96px 0 130px;color:var(--ink)}
+.fz>.wrap{position:relative;z-index:1}
+.fz.on{--ink:#f2f8f3;--sub:#cde0d4;--mut:#91ab9c;--line:#1f4d3d;--card:#0b2923;--ac:#c4f04a;--ac-b:#8fe27a;--ac2:#12392d;--am:#ffcf4a}
+.fz.sw,.fz.sw *{transition:color .9s,background-color .9s,border-color .9s,fill .9s,stroke .9s,opacity 1s!important}
+.fz.on .btn.primary{color:#07210f}
+.fz.on .btn.primary:hover{background:#d6f77c}
+.fz.on .btn:hover{box-shadow:0 8px 22px -10px rgba(196,240,74,.5)}
+.fz.on .tags li:hover{color:#07210f}
+.fz.on .frame{box-shadow:0 24px 46px -28px rgba(120,230,120,.35)}
+.fz.on .frame:hover{box-shadow:0 30px 54px -26px rgba(196,240,74,.55)}
+.fz.on .bar{background:#0f342b}
+.fz.on .stage{background:#08201c}
+/* night stadium haze: edges fade inside the gradient, so there is no hard cut */
+.aura2{position:absolute;inset:-150px 0 -40px;z-index:0;pointer-events:none;opacity:0;overflow:hidden;transition:opacity 1s ease;
+  background:radial-gradient(32% 28% at 12% 24%,rgba(255,244,205,.28),transparent 70%),radial-gradient(32% 28% at 88% 24%,rgba(255,244,205,.24),transparent 70%),radial-gradient(38% 28% at 16% 54%,rgba(43,89,255,.24),transparent 72%),radial-gradient(38% 28% at 86% 50%,rgba(239,59,75,.18),transparent 72%),radial-gradient(60% 28% at 50% 78%,rgba(20,184,102,.38),transparent 72%),linear-gradient(180deg,rgba(6,22,38,0) 0,rgba(6,22,38,.97) 240px,rgba(6,40,34,.97) calc(100% - 200px),rgba(6,40,34,0) 100%)}
+.fz.on .aura2{opacity:1}
+.beam{position:absolute;top:6%;width:38%;height:74%;transform-origin:50% 0;background:linear-gradient(180deg,transparent 0,rgba(255,246,214,.26) 18%,transparent 82%);clip-path:polygon(44% 0,56% 0,100% 100%,0 100%);will-change:transform;animation:sweep 9s ease-in-out infinite alternate}
+.b1{left:2%;--r:-9deg}.b2{right:2%;--r:9deg;animation-delay:-4s}
+@keyframes sweep{from{transform:rotate(calc(var(--r)*-.5))}to{transform:rotate(var(--r))}}
+.pitch{position:absolute;left:6%;right:6%;bottom:20%;height:40%;opacity:.5;transform:perspective(900px) rotateX(58deg);transform-origin:50% 100%;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 620' fill='none' stroke='white' stroke-width='4' stroke-opacity='.55'%3E%3Crect x='10' y='10' width='980' height='600'/%3E%3Cpath d='M500 10v600'/%3E%3Ccircle cx='500' cy='310' r='86'/%3E%3Crect x='10' y='150' width='160' height='320'/%3E%3Crect x='830' y='150' width='160' height='320'/%3E%3Crect x='10' y='235' width='58' height='150'/%3E%3Crect x='932' y='235' width='58' height='150'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+.wm{position:absolute;right:5%;top:18%;font:italic 800 clamp(110px,20vw,280px)/1 "Barlow Condensed","Segoe UI",sans-serif;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.08);user-select:none}
+.flash{position:absolute;left:0;right:0;top:20%;height:30%}
+.flash i{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 10px 3px rgba(255,255,255,.75);opacity:0;animation:pop 3s infinite}
+@keyframes pop{0%,90%,100%{opacity:0;transform:scale(.4)}93%{opacity:1;transform:scale(1.5)}96%{opacity:0}}
+.fz:not(.on) .beam,.fz:not(.on) .flash i{animation-play-state:paused}
+.fz.lite .beam,.fz.lite .flash{display:none}
+.fbc{position:fixed;left:0;top:0;width:100%;height:100%;z-index:3;pointer-events:none;opacity:0;transition:opacity .9s}
+.fz.on .fbc{opacity:1}
+.fz h3.wch{font:italic 800 clamp(2.1rem,4.6vw,3.1rem)/.98 "Barlow Condensed","Segoe UI",sans-serif;text-transform:uppercase;letter-spacing:0}
+.fz h3.wch::after{content:"";display:block;width:64px;height:4px;margin-top:12px;border-radius:2px;background:linear-gradient(90deg,#2b59ff,#14b866,#ef3b4b)}
+.live{display:inline-flex;align-items:center;gap:6px;margin-left:auto;padding:2px 9px;border-radius:999px;background:var(--ac);color:#07210f;font:700 .68rem var(--body);letter-spacing:.08em;font-style:normal}
+.live b{width:6px;height:6px;border-radius:50%;background:#07210f;animation:fzb 1s steps(2) infinite}
+@keyframes fzb{50%{opacity:.2}}
+.fzbtn{position:absolute;z-index:4;top:36px;right:max(24px,calc(50% - 496px));display:inline-flex;gap:6px;padding:8px 14px;border-radius:999px;font:500 .84rem var(--body);color:#f2f8f3;background:rgba(8,40,32,.85);border:1px solid rgba(255,255,255,.25);cursor:pointer;opacity:0;pointer-events:none;transition:opacity .9s,background .2s,transform .2s}
+.fz.on .fzbtn{opacity:1;pointer-events:auto}
+.fzbtn:hover{background:rgba(14,64,50,.95);transform:translateY(-2px)}
+.fzbtn b{font-weight:600}
+@media (min-width:901px){.feature2{grid-template-columns:1.25fr 1fr}.feature2>:first-child{order:2}}
+@media (max-width:900px){.fz{padding:80px 0 104px}.fzbtn{top:28px}}

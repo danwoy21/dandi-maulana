@@ -1,0 +1,40 @@
+/* Projects "danger zone": a soft crimson haze that fades in when the section is on screen (class .on is set by mosquito.js) */
+main>section{position:relative;z-index:2}
+#projects{z-index:1;padding:0;border-top:0}
+.zone{position:relative;z-index:1;padding:112px 0 124px;color:var(--ink)}
+.zone>.wrap{position:relative;z-index:1}
+.zone.on{--ink:#f7eeee;--sub:#dcc9ca;--mut:#b9a0a3;--line:#4f2331;--card:#1f0c14;--ac:#d62b43;--ac-b:#ff4d63;--ac2:#3b1019;--am:#ff9a3c}
+.zone.sw,.zone.sw *{transition:color .9s,background-color .9s,border-color .9s,fill .9s,stroke .9s,opacity 1s!important}
+.zone.on .btn:hover{box-shadow:0 8px 22px -10px rgba(255,46,67,.6)}
+.zone.on .btn.primary:hover{background:#ee3a52}
+.zone.on .frame{box-shadow:0 24px 46px -28px rgba(255,46,67,.45)}
+.zone.on .frame:hover{box-shadow:0 30px 54px -26px rgba(255,46,67,.65)}
+.zone.on .bar{background:#2b1019}
+.zone.on .stage{background:#150a0f}
+/* haze: the vertical edges fade out inside the gradient itself, so there is no hard cut */
+.aura{position:absolute;inset:-210px 0 -170px;z-index:0;pointer-events:none;opacity:0;transition:opacity 1s ease;
+  background:radial-gradient(60% 42% at 22% 36%,rgba(214,43,67,.5),transparent 72%),radial-gradient(52% 40% at 82% 68%,rgba(150,34,120,.45),transparent 72%),linear-gradient(180deg,rgba(45,11,23,0) 0,rgba(45,11,23,.96) 280px,rgba(30,8,18,.96) calc(100% - 240px),rgba(43,11,24,0) 100%)}
+.zone.on .aura{opacity:1}
+.pulse{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(255,40,70,.3),transparent 55%);will-change:opacity;animation:beat 3.4s ease-in-out infinite}
+@keyframes beat{0%,100%{opacity:.3}12%{opacity:1}24%{opacity:.45}36%{opacity:.95}60%{opacity:.3}}
+.bokeh{position:absolute;inset:260px 0 230px}
+.bokeh i{position:absolute;border-radius:50%;will-change:transform;animation:drift ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate3d(40px,-56px,0) scale(1.2)}}
+.zone:not(.on) .pulse,.zone:not(.on) .bokeh i{animation-play-state:paused}
+.zone.lite .pulse,.zone.lite .bokeh{display:none}
+.mzc{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;transition:opacity .9s}
+.zone.on .mzc{opacity:1}
+.zone.on h2{text-shadow:0 0 18px rgba(255,46,67,.55);animation:flick 7s infinite}
+@keyframes flick{0%,90%,100%{opacity:1}92%{opacity:.4}94%{opacity:1}96%{opacity:.55}}
+.warn{display:flex;align-items:center;gap:9px;min-height:22px;margin-bottom:12px;font:600 .86rem var(--body);color:#ff8a97;opacity:0;transition:opacity .9s}
+.zone.on .warn{opacity:1}
+.warn i{width:8px;height:8px;border-radius:50%;background:#ff2e43;box-shadow:0 0 8px #ff2e43;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:.15}}
+.mzbtn{position:absolute;z-index:4;top:50px;right:max(24px,calc(50% - 496px));display:inline-flex;gap:6px;padding:8px 14px;border-radius:999px;font:500 .84rem var(--body);color:#fff;background:rgba(70,18,32,.82);border:1px solid rgba(255,255,255,.25);cursor:pointer;opacity:0;pointer-events:none;transition:opacity .9s,background .2s,transform .2s}
+.zone.on .mzbtn{opacity:1;pointer-events:auto}
+.mzbtn:hover{background:rgba(110,26,46,.9);transform:translateY(-2px)}
+.mzbtn b{font-weight:600}
+/* More projects stays in the normal light theme */
+.more{position:relative;z-index:2;padding-top:72px;padding-bottom:84px}
+.more .sub{margin-top:0}
+@media (max-width:900px){.zone{padding:96px 0 104px}.mzbtn{top:46px}}
